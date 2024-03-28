@@ -1,10 +1,12 @@
 import express from "express"
 
-import {getAllTasks,getTasksByWorker } from "../controller/task"
+import {getAllTasks,getTasksByWorker,claimTasksByWorker } from "../controller/task.js"
 
 const router = express.Router();
 
 router.get('/allTask',getAllTasks);
-router.post('/byWorkerTask:id',getTasksByWorker);
+router.get('/byWorkerTask',getTasksByWorker);
+
+router.post('/claimTask',claimTasksByWorker);
 
 export default router;
