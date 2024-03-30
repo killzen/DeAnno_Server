@@ -12,5 +12,5 @@ app.use("/api/worker", workerRouter);
 app.listen(3000,()=>{
 
     console.log("server start");
-    console.log(data);
+    //console.log(data);
 })
