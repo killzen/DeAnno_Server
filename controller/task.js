@@ -28,14 +28,13 @@ export const getTasksByWorker =   (req, res) => {
 
 export const claimTasksByWorker = (req, res) => {
     const workid=req.query.workid;
-    // const updatedData = data.map(item => {
-    //     if (item.taskName === "任务1") {
-    //         return { ...item, userid: "1" };  // 更新 userid 属性为 "1"
-    //     } else {
-    //         return item;
-    //     }
-    // });
-    // const rsData = data.filter(item => item.userid == workid);     
-    return res.status(200).json("领取成功");
+    const id=req.query.id;
+    const q = `update task set userid= ? WHERE id = ? `;
+
+    querySQL(q, [workid,id], (err, data) => {
+      if (err) return res.status(500).json({ error: err.message });
+      console.log(data);
+      return res.status(200).json("领取成功");
+    });
   
 }
