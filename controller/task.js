@@ -1,11 +1,11 @@
 import moment from "moment";
-import { db } from "../connect.js"
+import querySQL from "../connect.js"
 
 
 export const getAllTasks = (req, res) => {
     const q = `SELECT * FROM task WHERE userid is ? `;
   
-    db.query(q, [null], (err, data) => {
+    querySQL(q, [null], (err, data) => {
       if (err) return res.status(500).json({ error: err.message });
       console.log(data);
       return res.status(200).json(data);
@@ -17,7 +17,7 @@ export const getTasksByWorker =   (req, res) => {
     const workid=req.query.workid;
     const q = `SELECT * FROM task WHERE userid = ? `;
   
-    db.query(q, [workid], (err, data) => {
+    querySQL(q, [workid], (err, data) => {
       if (err) return res.status(500).json({ error: err.message });
       console.log(data);
       return res.status(200).json(data);
