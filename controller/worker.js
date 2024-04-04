@@ -1,5 +1,5 @@
 import moment from "moment";
-import { db } from "../connect.js"
+import querySQL from "../connect.js"
 
 export const getWorkerDetail = (req, res) => {
     const workid=req.query.workid;

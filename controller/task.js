@@ -32,46 +32,52 @@ export const getTasksByWorker =   (req, res) => {
       if (err) return res.status(500).json({ error: err.message });
       console.log(data);
       return res.status(200).json(data);
-    });
-       
+    });     
 }
 
 
 export const claimTasksByWorker = (req, res) => {
-    const workid=req.query.workid;
-    const id=req.query.id;
-    const q = `update task set userid= ? WHERE id = ? `;
+    const {workid,id}=  req.body;
+    console.log(workid);
+    const q = "update task set `userid`= ?,state= '1' WHERE id = ? ";
 
-    querySQL(q, [workid,id], (err, data) => {
+    querySQL(q, [parseInt(workid),parseInt(id)], (err, data, sql) => {
       if (err) return res.status(500).json({ error: err.message });
-      console.log(data);
-      return res.status(200).json("领取成功");
+      if (data.affectedRows > 0) return res.json("领取成功!");
+      return res.status(403).json("领取失败!");
     });
   
 }
 
 //submit & Complete
 export const submitTask = (req, res) => {
-  const workid=req.query.workid;
-  const id=req.query.id;
+  const {workid,id}=  req.body;
+  console.log(workid);
+  
   const q = `update task set state= '2' WHERE userid = ? and id = ? `;
 
-  querySQL(q, [workid,id], (err, data) => {
+  querySQL(q, [parseInt(workid),parseInt(id)], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     console.log(data);
-    return res.status(200).json("提交成功");
+    if (data.affectedRows > 0) return res.json("提交成功!");
+    return res.status(403).json("提交失败!");
   });
+}
 
-  //The execution is delayed by 5 seconds
-  setTimeout(() => {
-    const audit = `update task set state= '3' WHERE userid = ? and id = ? `;
 
-    querySQL(audit, [workid,id], (err, data) => {
-      if (err) return res.status(500).json({ error: err.message });
-      console.log(data);
-      return res.status(200).json("已完成");
-    });
-  }, 5000);
+//The execution is delayed by 5 seconds
+export const completeTask = (req, res) => {
+  const {workid,id}=  req.body;
+  console.log(workid);
+  const audit = "update task set state= '3' WHERE userid = ? and id = ? ";
 
-  
+  querySQL(audit, [parseInt(workid),parseInt(id)], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    console.log(data);
+    if (data.affectedRows > 0) return res.json("已完成!");
+    return res.status(403).json("未完成!");
+  });
+ 
+
+
 }

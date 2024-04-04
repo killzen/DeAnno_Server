@@ -21,20 +21,22 @@ const querySQL = (sql, params, callback) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.error('Error getting database connection:', err);
-      callback(err, null);
+      callback(err, null,sql);
       return;
     }
     
     // Perform the query operation
+    
     connection.query(sql, params, (err, results) => {
      // Release the connection
       connection.release();
       if (err) {
         console.error('Error executing query:', err);
-        callback(err, null);
+        callback(err, null,sql);
         return;
       }
-      callback(null, results);
+      console.log('Executing SQL:', sql);
+      callback(null, results,sql);
     });
   });
 };
