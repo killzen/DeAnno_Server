@@ -18,7 +18,7 @@ app.use(cors());
 app.use("/api/task", taskRouter);
 app.use("/api/worker", workerRouter);
 
-app.listen(3000,'127.0.0.1',()=>{
+app.listen(5000,'192.168.184.188',()=>{
 
     console.log("server start");
     //console.log(data);
